@@ -1,6 +1,6 @@
 {
   "server": {
-    "url": "ws://192.168.128.4:18888/proxynt",
+    "url": "ws://192.168.128.4:18888/websocket_path",
     "password": "ccy888888"
   },
 
