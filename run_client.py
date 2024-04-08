@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import platform
 import signal
 import socket
 import sys
@@ -53,6 +54,19 @@ OPEN_CLOSE_LOCK = threading.Lock()
 
 name_to_speed_limiter: Dict[str, SpeedLimiter] = {}
 
+def get_host_ip():
+    ip, host_name = "", ""
+    try:
+        sc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sc.connect(('8.8.8.8', 80))
+        ip = sc.getsockname()[0]
+        host_name = socket.gethostname()
+        sc.close()
+    except Exception:
+        pass
+    return host_name, ip
+
+
 
 def get_config() -> ClientConfigEntity:
     parser = OptionParser(usage="""usage: %prog -c config_c.json 
@@ -104,6 +118,13 @@ config_c.json example:
         if client['name'] in name_set:
             raise DuplicatedName()
         name_set.add(client['name'])
+    host_name, ip = get_host_ip()
+    platform_type = platform.system()
+    config_data['client_info'] = {
+        "ip": ip,
+        "host_name": host_name,
+        "platform": platform_type,
+    }
     return config_data
 
 
@@ -162,11 +183,13 @@ class WebsocketClient:
                 LoggerFactory.get_logger().info('open success')
                 push_client_data: List[ClientData] = self.config_data['client']
                 client_name = self.config_data.get('client_name', socket.gethostname())
+                client_info = self.config_data.get('client_info', {})
                 push_configs: PushConfigEntity = {
                     'key': ContextUtils.get_password(),
                     'config_list': push_client_data,
                     "client_name": client_name,
-                    'version': SystemConstant.VERSION
+                    'version': SystemConstant.VERSION,
+                    'client_info': client_info
                 }
                 message: MessageEntity = {
                     'type_': MessageTypeConstant.PUSH_CONFIG,
@@ -204,7 +227,6 @@ def run_client(ws: websocket.WebSocketApp):
 
 
 def main():
-    print('github: ', SystemConstant.GITHUB)
     config_data = get_config()
     signal.signal(signal.SIGINT, signal_handler)
     websocket.setdefaulttimeout(3)

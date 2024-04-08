@@ -1,10 +1,10 @@
 {
     "port": 18888,
-    "password": "helloworld",
-    "path": "/websocket_path",
+    "password": "ccy888888",
+    "path": "/proxynt",
     "log_file": "/var/log/nt/nt.log",
     "admin": {
         "enable": true,
-        "admin_password": "new_password"
+        "admin_password": "ccy888888"
     }
 }

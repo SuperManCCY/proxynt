@@ -17,7 +17,7 @@ from server.websocket_handler import MyWebSocketaHandler
 
 # todo: 身份认证
 COOKIE_KEY = 'c'
-MIN_PORT = 1000
+MIN_PORT = 0
 NOT_LOGIN = 401
 
 
@@ -87,6 +87,7 @@ class AdminHttpApiHandler(RequestHandler):
                 if handler is None:
                     continue
                 config_list = push_config['config_list']  # 转发配置列表
+                client_info = push_config['client_info']
                 name_in_server: List[str] = list()
                 for x in client_name_to_config_list_in_server.get(client_name, []):
                     name_in_server.append(x['name'])
@@ -95,8 +96,11 @@ class AdminHttpApiHandler(RequestHandler):
                     'config_list': config_list,
                     'status': 'online',
                     'version': handler.version,
-                    'can_delete_names': [x['name'] for x in client_name_to_config_list_in_server.get(client_name, [])]
+                    'can_delete_names': [x['name'] for x in client_name_to_config_list_in_server.get(client_name, [])],
                     # 配置在服务器上的, 可以删除
+                    "ip": client_info.get("ip",""),
+                    "host_name": client_info.get("host_name",""),
+                    "platform": client_info.get("platform",""),
                 })
                 online_set.add(client_name)
 
@@ -108,7 +112,10 @@ class AdminHttpApiHandler(RequestHandler):
                     'config_list': config_list,
                     'version': '',
                     'status': 'offline',
-                    'can_delete_names': [x['name'] for x in client_name_to_config_list_in_server.get(client_name, [])]
+                    'can_delete_names': [x['name'] for x in client_name_to_config_list_in_server.get(client_name, [])],
+                    "ip": "",
+                    "host_name": "",
+                    "platform": "",
                 })
             return_list.sort(key=lambda x: x['client_name'])
             self.write({

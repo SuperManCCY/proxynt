@@ -1,8 +1,8 @@
 {
   "server": {
-    "url": "ws://192.168.9.224:18888/websocket_path",
-    "password": "helloworld"
+    "url": "ws://192.168.128.4:18888/proxynt",
+    "password": "ccy888888"
   },
-  "client_name": "windows10_sql",
+
   "log_file": "/var/log/nt/nt.log"
 }
