@@ -1,6 +1,6 @@
 {
   "server": {
-    "url": "ws://192.168.128.4:18888/websocket_path",
+    "url": "ws://139.9.209.125:18888/websocket_path",
     "password": "ccy88888888"
   },
 
