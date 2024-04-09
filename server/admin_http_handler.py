@@ -87,7 +87,7 @@ class AdminHttpApiHandler(RequestHandler):
                 if handler is None:
                     continue
                 config_list = push_config['config_list']  # 转发配置列表
-                client_info = push_config['client_info']
+                client_info = push_config.get("client_info",{})
                 name_in_server: List[str] = list()
                 for x in client_name_to_config_list_in_server.get(client_name, []):
                     name_in_server.append(x['name'])
