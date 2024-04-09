@@ -5,6 +5,6 @@
     "log_file": "/var/log/nt/nt.log",
     "admin": {
         "enable": true,
-        "admin_password": "ccy888888"
+        "admin_password": "admin88888888"
     }
 }
