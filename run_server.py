@@ -5,6 +5,7 @@ import os.path
 import signal
 import sys
 from optparse import OptionParser
+from pathlib import Path
 
 from server.http_handler import FileDownloadHandler
 
@@ -24,7 +25,10 @@ from server.task.heart_beat_task import HeartBeatTask
 from server.tcp_forward_client import TcpForwardClient
 from server.websocket_handler import MyWebSocketaHandler
 
-DEFAULT_CONFIG = './config_s.json'
+
+project_path = Path(__file__).resolve().parent
+# DEFAULT_CONFIG = './config_s.json'
+DEFAULT_CONFIG = os.path.join(project_path, "config_s.json")
 DEFAULT_LOGGER_LEVEL = logging.INFO
 DEFAULT_WEBSOCKET_PATH = '/ws'
 
