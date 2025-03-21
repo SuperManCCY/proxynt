@@ -1,7 +1,31 @@
 {% extends "./base.html" %}
+
 {% block body%}
 
+<style scoped>
+    .title-container {
+      text-align: center;
+    }
+    .centered-title {
+      /* 可以添加其他样式 */
+      color: #333;
+      margin: 20px 0;
+      font-size: 24px;
+    }
+    .link-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+</style>
+
 <div id="app">
+      <div class="title-container">
+        <h1 class="centered-title">ProxyNt内网穿透</h1>
+      </div>
+      <div class="link-container">
+        <el-link type="primary"  icon="el-icon-download" href="/api/download">下载客户端配置文件</el-link>
+      </div>
+
     <el-table
             :data="tableData"
             medium="medium"
@@ -255,10 +279,13 @@
                     this.$message.error(err)
                     // alert('服务器出现错误')
                 })
-            }
+            },
         }
     })
 </script>
 
 
+
 {% end %}
+
+

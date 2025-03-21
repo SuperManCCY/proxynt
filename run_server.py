@@ -6,6 +6,7 @@ import signal
 import sys
 from optparse import OptionParser
 
+from server.http_handler import FileDownloadHandler
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -118,6 +119,7 @@ def main():
     tcp_forward_client = TcpForwardClient.get_instance()
     handlers = [
         (websocket_path, MyWebSocketaHandler),
+        ("/api/download", FileDownloadHandler, dict(server_config)),
     ]
     if admin_enable:
         handlers.extend([

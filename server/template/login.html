@@ -2,53 +2,118 @@
 {% block body%}
 
 <div id="app">
-
-    <el-row :gutter="10"  justify="center" align="middle">
-        <el-col :span="12">
-            <el-form :model="form" @submit.native.prevent>
-                <el-form-item label="密码 " :label-width="formLabelWidth">
-                    <el-input v-model="form.password" autocomplete="off" @keyup.enter.native="handleLogin" type="password"></el-input>
-                </el-form-item>
-            </el-form>
-        </el-col>
-        <el-col :span="12">
-            <el-button @click="handleLogin">登录</el-button>
-        </el-col>
-    </el-row>
-
+    <div class="login-container">
+        <h2 class="login-title">系统登录</h2>
+        <el-row type="flex" justify="center" :gutter="20">
+            <el-col :span="20">
+                <el-form :model="form" @submit.native.prevent class="login-form">
+                    <el-form-item label="账号" :label-width="formLabelWidth">
+                        <el-input v-model="form.username" disabled></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" :label-width="formLabelWidth">
+                        <el-input
+                            v-model="form.password"
+                            type="password"
+                            placeholder="请输入密码"
+                            @keyup.enter.native="handleLogin"
+                            show-password
+                        ></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button
+                            type="primary"
+                            @click="handleLogin"
+                            class="login-button"
+                            :loading="loading"
+                        >
+                            登录
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+        </el-row>
+    </div>
 </div>
+
+<style>
+.login-container {
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 30px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    background: white;
+}
+
+.login-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #409EFF;
+    font-size: 24px;
+}
+
+.el-row {
+    margin: 0 !important;
+}
+
+.login-form {
+    padding: 20px;
+    width: 100%;
+}
+
+.login-button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.el-form-item {
+    margin-bottom: 25px;
+}
+</style>
+
 <script>
     new Vue({
         el: '#app',
-        delimiters: ['{[', ']}']   , // 这句可以指定 {[ ]} 为插值表达式的新符号
+        delimiters: ['{[', ']}'],
         data() {
             return {
-                formLabelWidth: '120px',
+                formLabelWidth: '80px',
+                loading: false,
                 form: {
+                    username: 'admin',
                     password: ''
                 }
             }
         },
-        mounted() {
-        },
         methods: {
             handleLogin() {
-                const url = window.location.href
+                if (!this.form.password) {
+                    this.$message.warning('请输入密码');
+                    return;
+                }
 
-                axios.post(url, this.form).then(res=> {
-                    if (res.data.code !== 200) {
-                        return alert(res.data.msg)
-                    }
-                    location.reload();
-                }).catch(err => {
-                    console.log(err)
-                    alert('服务器出现错误')
-                })
+                this.loading = true;
+                const url = window.location.href;
 
+                axios.post(url, this.form)
+                    .then(res => {
+                        if (res.data.code !== 200) {
+                            this.$message.error(res.data.msg);
+                            return;
+                        }
+                        this.$message.success('登录成功');
+                        location.reload();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        this.$message.error('服务器出现错误');
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
             }
         }
     })
 </script>
-
 
 {% end %}
