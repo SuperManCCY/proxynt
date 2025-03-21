@@ -1,7 +1,7 @@
 {
   "server": {
     "url": "ws://159.75.88.40:18888/",
-    "password": "ccy88888888"
+    "password": "proxynt"
   },
 
   "log_file": "/var/log/nt/nt.log"
