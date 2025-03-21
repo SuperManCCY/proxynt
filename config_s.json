@@ -2,7 +2,7 @@
     "port": 18888,
     "password": "proxynt",
     "path": "/",
-    "log_file": "/var/log/nt/nt.log",
+    "log_file": "./logs/nt.log",
     "admin": {
         "enable": true,
         "admin_password": "ccy1994,"
