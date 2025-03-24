@@ -30,7 +30,7 @@
             :data="tableData"
             medium="medium"
             row-key="client_name"
-            style="width: 90%; margin: 0 auto">
+            style="width: 95%; margin: 0 auto">
         <el-table-column type="expand">
             <template slot-scope="props">
                 <el-table
@@ -61,7 +61,7 @@
                             label="限速(单位MB)"
                             width="180">
                     </el-table-column>
-                    <el-table-column label="操作" width="200">
+                    <el-table-column label="操作" width="300">
 
                         <template slot-scope="scope">
                             <el-row>
@@ -72,6 +72,10 @@
                                 <el-button :disabled="props.row.can_delete_names.indexOf(scope.row.name) === -1 "
                                            size="mini"
                                            @click="handleEdit(scope.row, props.row.client_name)">编辑
+                                </el-button>
+                                <el-button :disabled="props.row.can_delete_names.indexOf(scope.row.name) === -1 "
+                                           size="mini"
+                                           @click="handleTarget(scope.row, props.row.client_name)">快速访问
                                 </el-button>
                             </el-row>
 
@@ -212,6 +216,13 @@
                 }
                 console.log('-------',  row);
                 this.dialogFormVisible = true
+            },
+            handleTarget(row, client_name) {
+                var window_hostname = window.location.hostname
+                var target_url = 'http://' + window_hostname + ':' + row.remote_port
+                console.log('target_url -------',  target_url);
+                window.open(target_url)
+
             },
             submitAddOrEdit() {
                 var url = window.location.href.split('?')[0] + '/api'
